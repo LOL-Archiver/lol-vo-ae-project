@@ -1,0 +1,31 @@
+{
+	"compilerOptions": {
+		"module": "none",
+		"target": "es5",
+		"strict": true,
+		"allowJs": true,
+		"noLib": true,
+		"skipLibCheck": true,
+		"outFile": "../dist-extend/index.js",
+	},
+	"files": [
+		"./lib/tool.js",
+		"./lib/config.js",
+		"./lib/footage.js",
+		"./lib/lang.js",
+		"./lib/ensure.js",
+
+		"./part/add-global.js",
+		"./part/add-opener.js",
+		"./part/add-title.js",
+		"./part/calc-duration.js",
+		"./part/add-line.js",
+		"./part/add-line-scroll.js",
+		"./part/add-bgm.js",
+		"./part/add-ending.js",
+		"./part/add-background.js",
+		"./part/add-counter.js",
+
+		"./index.js",
+	]
+}

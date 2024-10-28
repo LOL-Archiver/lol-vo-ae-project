@@ -1,0 +1,35 @@
+{
+	"name": "@lol-archiver/lol-vo-aeproject-autogen",
+	"version": "5.0.0",
+	"description": "",
+	"author": "DanoR",
+	"license": "LGPL-3.0-or-later",
+	"private": true,
+	"type": "module",
+	"typesSource": [
+		"node",
+		"extendscript-esnext"
+	],
+	"engines": {
+		"node": ">=20"
+	},
+	"main": "./index.js",
+	"scripts": {
+		"更新配置": "node index.js",
+		"构建": "cd src-extend && tsc -v && tsc"
+	},
+	"dependencies": {
+		"fs-extra": "^11.2.0",
+		"music-metadata": "^10.5.1",
+		"types-for-adobe": "^7.2.1",
+		"typescript": "^5.6.3"
+	},
+	"devDependencies": {
+		"@eslint/js": "^9.13.0",
+		"@stylistic/eslint-plugin-js": "^2.9.0",
+		"@types/fs-extra": "^11.0.4",
+		"@types/node": "^20.17.1",
+		"eslint": "^9.13.0",
+		"globals": "^15.11.0"
+	}
+}
