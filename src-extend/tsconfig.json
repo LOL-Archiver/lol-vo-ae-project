@@ -25,6 +25,7 @@
 		"./part/add-ending.js",
 		"./part/add-background.js",
 		"./part/add-counter.js",
+		"./part/add-global-mark.js",
 
 		"./index.js",
 	]

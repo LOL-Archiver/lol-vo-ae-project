@@ -1,8 +1,8 @@
 this.AddCounter = () => {
-	const layerWaterMark = CompMain.layers.add(GetFootage(I.file.waterMark));
+	const layerWaterMark = CompMain.layers.add(GetFootage(I.fileWaterMark));
 
 	layerWaterMark.transform.scale.setValue([14, 14]);
-	layerWaterMark.transform.position.setValue([40, I.video.height - (40 + 40)]);
+	layerWaterMark.transform.position.setValue([40, I.heightVideo - (40 + 40)]);
 
 	layerWaterMark.startTime = D.opener + 1;
 	layerWaterMark.duration = D.linesEnd;
@@ -20,7 +20,7 @@ this.AddCounter = () => {
 
 
 	const layerCounter = CompMain.layers.addText('');
-	layerCounter.transform.position.setValue([(40 + 30), I.video.height - (40 + 20 + 40)]);
+	layerCounter.transform.position.setValue([(40 + 30), I.heightVideo - (40 + 20 + 40)]);
 
 	const textDocCounter = layerCounter.sourceText.value;
 	textDocCounter.resetCharStyle();
@@ -42,5 +42,7 @@ this.AddCounter = () => {
 	while(now) {
 		layerCounter.sourceText.setValueAtTime(duration, now - 1);
 		duration += LinesInfoExtra[D.lengthLine - now--][0] + D.interval;
+
+		if(now % 20 == 0) { $.writeln(`counter added: ${now}/${D.lengthLine}`); }
 	}
 };

@@ -1,0 +1,34 @@
+{
+	"$": {
+		"pixelAspect": 1,
+		"frameRate": 60,
+		"durationInterval": 0.4,
+		"durationOpener": 4,
+		"durationEnding": 7,
+		"durationTitle": 3,
+		"durationExtendLine": 0.4,
+		"sizeFontLine": 50,
+		"sizeFontCond": 34,
+		"sizeFontMark": 34,
+		"paddingTopExtra$event": 70,
+		"paddingLine": 40,
+		"paddingCond": 34,
+		"paddingMark": 34,
+		"sizeBoxHeader": 200,
+		"heightLeading": 10,
+		"gapLive": 80,
+		"gapBoxLive": 20
+	},
+	"landscape": {
+		"widthVideo": 1920,
+		"heightVideo": 1080,
+		"paddingSideVideo": 200,
+		"paddingBottomVideo": 100
+	},
+	"portrait": {
+		"widthVideo": 1080,
+		"heightVideo": 1920,
+		"paddingSideVideo": 140,
+		"paddingBottomVideo": 160
+	}
+}

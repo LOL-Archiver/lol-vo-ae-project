@@ -1,14 +1,14 @@
 this.AddLineScroll = (line, compLine, index, accumDuration, durationLine) => {
-	const xCenter = I.video.width / 2 - (I.video.landscape ? 0 : 220);
-	const yCenter = I.video.height / 2;
+	const xCenter = I.widthVideo / 2 - (I.landscape ? 0 : 220);
+	const yCenter = I.heightVideo / 2;
 
 	const layerLine = CompMain.layers.add(compLine, durationLine);
 
 	layerLine.startTime = accumDuration;
 
-	layerLine.transform.position.setValue([xCenter, yCenter + line.heightLive + I.video.size.paddingBottomVideo]);
+	layerLine.transform.position.setValue([xCenter, yCenter + line.heightLive + I.paddingBottomVideo]);
 
-	if(!I.video.landscape) {
+	if(!I.landscape) {
 		layerLine.transform.scale.setValue([80, 80]);
 	}
 
@@ -18,7 +18,7 @@ this.AddLineScroll = (line, compLine, index, accumDuration, durationLine) => {
 	layerLine.transform.opacity.setValueAtTime(accumDuration + line.duration + 0.1, 80);
 
 
-	let yLine = yCenter + (line.heightLive + I.video.size.paddingBottomVideo);
+	let yLine = yCenter + (line.heightLive + I.paddingBottomVideo);
 	let accumDurationLine = accumDuration;
 
 	while(yLine >= -yCenter) {
@@ -27,7 +27,7 @@ this.AddLineScroll = (line, compLine, index, accumDuration, durationLine) => {
 
 
 		const nextDuration = lineInfoExtra[0];
-		const nextBoxHeight = lineInfoExtra[1] + I.video.size.gapLive;
+		const nextBoxHeight = lineInfoExtra[1] + I.gapLive;
 
 		layerLine.transform.position.setValueAtTime(accumDurationLine, [xCenter, yLine]);
 

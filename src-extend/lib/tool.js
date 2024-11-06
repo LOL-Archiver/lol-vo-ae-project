@@ -70,7 +70,7 @@ this.EnsureDir = (name, parent) => {
  * @param {number} heightVideo 视频高度
  * @returns {CompItem} 合成项目
  */
-this.EnsureComp = (name, duration, parent, widthVideo = I.video.width, heightVideo = I.video.height) => {
+this.EnsureComp = (name, duration, parent, widthVideo = I.widthVideo, heightVideo = I.heightVideo) => {
 	let comp;
 
 
@@ -78,7 +78,7 @@ this.EnsureComp = (name, duration, parent, widthVideo = I.video.width, heightVid
 
 
 	if(!comp) {
-		comp = parent.items.addComp(name, widthVideo, heightVideo, I.video.pixelAspect, duration, I.video.frameRate);
+		comp = parent.items.addComp(name, widthVideo, heightVideo, I.pixelAspect, duration, I.frameRate);
 		comp.bgColor = RGBH('2D2D2D');
 	}
 
@@ -144,19 +144,11 @@ this.AddText = (group, string, nameText) => {
 };
 
 
-this.EvalString = str => {
-	return str.replace(/\$\{.+?\}/g, text => {
-		I;
-		try {
-			return eval(text.replace(/(^\$\{)|(\}$)/g, ''));
-		}
-		catch {
-			return text;
-		}
-	});
-};
 
-
+/**
+ * @param {LineConfig[]} lines
+ * @param {(line: LineConfig, lid: number, index: number) => void} callback
+ */
 this.EnumLine = (lines, callback) => {
 	let index = 0;
 
@@ -171,12 +163,13 @@ this.EnumLine = (lines, callback) => {
 
 
 // eslint-disable-next-line no-useless-escape
-const regexSize13 = /[A-Za-z0-9,.!()<> …%\\\/'":]/g;
+const regexSize13 = /[A-Za-z0-9,.!(){}<> …%\\\/'":]/g;
 const charsSize13 = ['Ọ̀', 'ẹ'];
 
+/** @param {string} text */
 this.GetBoxSize = text => {
-	const fontSize = I.video.size.fontLine;
-	const heightLeading = I.video.size.heightLeading;
+	const fontSize = I.sizeFontLine;
+	const heightLeading = I.heightLeading;
 	const widthMax = 1050;
 	const heightMax = 1050;
 
@@ -252,8 +245,8 @@ this.GetBoxSize = text => {
 
 
 this.GetBoxSizeMark = text => {
-	const fontSize = I.video.size.fontMark;
-	const heightLeading = I.video.size.heightLeading;
+	const fontSize = I.sizeFontMark;
+	const heightLeading = I.heightLeading;
 	const widthMax = 1200;
 	const heightMax = 1050;
 

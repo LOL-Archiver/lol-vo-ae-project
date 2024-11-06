@@ -1,12 +1,12 @@
 this.AddEnding = () => {
 	const textThankyou = '感谢观看！';
-	const textInfo = I.textInfo;
+	const textEnding = I.textEnding;
 
 
-	const scaleBackground = I.video.landscape ? 158 : 268;
+	const scaleBackground = I.landscape ? 158 : 268;
 
 
-	const footageBackground = GetFootage(EvalString(I.file.background));
+	const footageBackground = GetFootage(I.fileBackground);
 	const isVideoBackground = (footageBackground.file.name.match(/\.mp4$/) || []).length > 0;
 
 
@@ -67,7 +67,7 @@ this.AddEnding = () => {
 	effectDropShadowThankyou[L.shadowOnly].setValue(0);
 
 
-	const layerCredit = CompMain.layers.addText(textInfo);
+	const layerCredit = CompMain.layers.addText(textEnding);
 
 	layerCredit.startTime = D.linesEnd + 3.4;
 	layerCredit.duration = D.credit;
@@ -78,7 +78,7 @@ this.AddEnding = () => {
 
 	const textDocCredit = layerCredit.sourceText.value;
 	textDocCredit.resetCharStyle();
-	textDocCredit.fontSize = I.video.size.fontLine;
+	textDocCredit.fontSize = I.sizeFontLine;
 	textDocCredit.font = 'Source Han Mono SC';
 	textDocCredit.applyStroke = true;
 	textDocCredit.fillColor = RGBH('FFFAFA');

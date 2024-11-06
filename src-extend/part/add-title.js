@@ -5,8 +5,8 @@ const makeTitle = () => {
 	const fontSize = 140;
 
 	const fontSizeHalf = fontSize / 2;
-	const widthVideoHalf = I.video.width / 2;
-	const heightVideoHalf = I.video.height / 2;
+	const widthVideoHalf = I.widthVideo / 2;
+	const heightVideoHalf = I.heightVideo / 2;
 
 	const colorText = RGBH('FFFAFA');
 	const colorShadow = RGBH('000000');
@@ -80,8 +80,8 @@ const makeTitle = () => {
 
 
 	// Mask Text Top
-	maskTextT.content.addProperty('ADBE Vector Shape - Rect').size.setValue([I.video.width, I.video.height]);
-	maskTextT.content.addProperty('ADBE Vector Graphic - Fill').color.expression = 'comp("00-全局变量").layer("01-台词盒颜色").content("组 1").content("填充 1").color';
+	maskTextT.content.addProperty('ADBE Vector Shape - Rect').size.setValue([I.widthVideo, I.heightVideo]);
+	maskTextT.content.addProperty('ADBE Vector Graphic - Fill').color.expression = `comp("00-全局变量").layer("${I.colorsLine[0]}").content("组 1").content("填充 1").color`;
 	maskTextT.enabled = false;
 	maskTextT.transform.anchorPoint.setValue([-widthVideoHalf, 0]);
 
@@ -90,8 +90,8 @@ const makeTitle = () => {
 	SetEase(maskTextT.transform.position, 1, 2, Ease1);
 
 	// Mask Text Bottom
-	maskTextB.content.addProperty('ADBE Vector Shape - Rect').size.setValue([I.video.width, I.video.height]);
-	maskTextB.content.addProperty('ADBE Vector Graphic - Fill').color.expression = 'comp("00-全局变量").layer("01-台词盒颜色").content("组 1").content("填充 1").color';
+	maskTextB.content.addProperty('ADBE Vector Shape - Rect').size.setValue([I.widthVideo, I.heightVideo]);
+	maskTextB.content.addProperty('ADBE Vector Graphic - Fill').color.expression = `comp("00-全局变量").layer("${I.colorsLine[1] || I.colorsLine[0]}").content("组 1").content("填充 1").color`;
 	maskTextB.enabled = false;
 	maskTextB.transform.anchorPoint.setValue([+widthVideoHalf, 0]);
 
@@ -107,7 +107,7 @@ const makeTitle = () => {
 
 	const barT = AddProperty(shapeBar.content, 'ADBE Vector Group', 'bar-top');
 	AddProperty(barT.content, 'ADBE Vector Shape - Rect').size.setValue([10, fontSize]);
-	AddProperty(barT.content, 'ADBE Vector Graphic - Fill').color.expression = 'comp("00-全局变量").layer("01-台词盒颜色").content("组 1").content("填充 1").color';
+	AddProperty(barT.content, 'ADBE Vector Graphic - Fill').color.expression = `comp("00-全局变量").layer("${I.colorsLine[0]}").content("组 1").content("填充 1").color`;
 
 	barT.transform.anchorPoint.setValue([0, fontSizeHalf]);
 	barT.transform.scale.setValueAtTime(0, [100, 0]);
@@ -123,7 +123,7 @@ const makeTitle = () => {
 
 	const barB = AddProperty(shapeBar.content, 'ADBE Vector Group', 'bar-bottom');
 	barB.content.addProperty('ADBE Vector Shape - Rect').size.setValue([10, fontSize]);
-	barB.content.addProperty('ADBE Vector Graphic - Fill').color.expression = 'comp("00-全局变量").layer("01-台词盒颜色").content("组 1").content("填充 1").color';
+	barB.content.addProperty('ADBE Vector Graphic - Fill').color.expression = `comp("00-全局变量").layer("${I.colorsLine[1] || I.colorsLine[0]}").content("组 1").content("填充 1").color`;
 
 	barB.transform.anchorPoint.setValue([0, -fontSizeHalf]);
 	barB.transform.scale.setValueAtTime(0, [100, 0]);
@@ -143,11 +143,11 @@ const makeTitle = () => {
 this.AddTitle = () => {
 	const [compTitle, widthTextMaxHalf, fontSize, offsetBar] = makeTitle();
 	const scaleTitle = 70;
-	const offsetTitleTop = Math.max(offsetBar, I.video.width * 0.05);
-	const offsetTitleLeft = Math.max(offsetBar, I.video.height * 0.05);
+	const offsetTitleTop = Math.max(offsetBar, I.widthVideo * 0.05);
+	const offsetTitleLeft = Math.max(offsetBar, I.heightVideo * 0.05);
 
-	// compTitle.addGuide(0, I.video.height / 2);
-	// compTitle.addGuide(1, I.video.width / 2);
+	// compTitle.addGuide(0, I.heightVideo / 2);
+	// compTitle.addGuide(1, I.widthVideo / 2);
 	// compTitle.openInViewer().views[0].options.guidesVisibility = true;
 
 	const layerTitle = CompMain.layers.add(compTitle, D.title);

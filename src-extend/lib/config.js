@@ -1,20 +1,20 @@
-/** @type {VideoInfo} */
+/** @type {FinalProjectInfo} */
 this.I = JSON.parse(ReadFile(PATH_INFO));
 
 
-if(!I.video.landscape) {
-	I.video.size.fontMark = I.video.size.fontLine - 8;
-	I.video.size.paddingMark = I.video.size.fontLine - 8;
+if(!I.landscape) {
+	I.sizeFontMark = I.sizeFontLine - 8;
+	I.paddingMark = I.sizeFontLine - 8;
 }
 
 
 
 /** @type {DurationOrCount} */
 this.D = {
-	interval: I.video.duration.interval,
-	opener: I.video.duration.opener,
-	ending: I.video.duration.ending,
-	title: I.video.duration.title,
+	interval: I.durationInterval,
+	opener: I.durationOpener,
+	ending: I.durationEnding,
+	title: I.durationTitle,
 };
 
 

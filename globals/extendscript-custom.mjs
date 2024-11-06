@@ -9,7 +9,6 @@ export default {
 	EnsureComp: false,
 	RGB: false,
 	RGBH: false,
-	EvalString: false,
 	EnumLine: false,
 	GetBoxSize: false,
 	GetBoxSizeMark: false,
@@ -38,6 +37,7 @@ export default {
 	AddEnding: false,
 	AddBackGround: false,
 	AddCounter: false,
+	AddGlobalMark: false,
 
 	OffsetSplashBackground: false,
 

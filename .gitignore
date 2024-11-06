@@ -1,6 +1,7 @@
 /node_modules
 /test/local
 /test/*.local.*
-/reso
+/resource
 /dist-extend
-/config.js
+/config.project-user.json
+/config.runcom.json

@@ -1,29 +1,25 @@
 this.CalcDuration = () => {
-	/** @type {Array} */
-	let lines = I.lines;
-
-	if(I.video.range) { lines = lines.slice(I.video.range[0] - 1, I.video.range[1]); }
+	const lines = I.lines;
 
 
 	let durationLines = 0;
-
 
 	D.lengthLine = 0;
 	EnumLine(lines, () => D.lengthLine++);
 
 	EnumLine(lines, (line, lid, index) => {
-		const [widthTextLine, heightTextLine, countRowBoxLine] = GetBoxSize(line.line);
+		const [widthTextLine, heightTextLine, countRowBoxLine] = GetBoxSize(line.caption);
 
 		line.widthTextLine = widthTextLine;
 		line.heightTextLine = heightTextLine;
 		line.countRowLine = countRowBoxLine;
 
 		line.heightLive =
-			+ I.video.size.paddingLine
+			+ I.paddingLine
 			+ heightTextLine
-			+ I.video.size.paddingLine
-			+ I.video.size.paddingTopExtra$event
-			+ I.video.size.sizeBoxHeader / 2;
+			+ I.paddingLine
+			+ I.paddingTopExtra$event
+			+ I.sizeBoxHeader / 2;
 
 
 		if(line.cond) {
@@ -32,7 +28,7 @@ this.CalcDuration = () => {
 			line.widthTextCond = widthTextCond;
 			line.heightTextCond = heightTextCond;
 
-			line.heightLive += I.video.size.paddingCond + heightTextCond + I.video.size.paddingCond;
+			line.heightLive += I.paddingCond + heightTextCond + I.paddingCond;
 		}
 
 
@@ -42,7 +38,7 @@ this.CalcDuration = () => {
 			line.widthTextMark = widthTextMark;
 			line.heightTextMark = heightTextMark;
 
-			line.heightLive += I.video.size.gapBoxLive + I.video.size.paddingMark + heightTextMark + I.video.size.paddingMark;
+			line.heightLive += I.gapBoxLive + I.paddingMark + heightTextMark + I.paddingMark;
 		}
 
 

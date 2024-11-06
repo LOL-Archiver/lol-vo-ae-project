@@ -1,7 +1,7 @@
 this.AddBGM = () => {
-	if(I.video.mute) { return; }
+	if(I.mute) { return; }
 
-	const footage = GetFootage(I.file.bgm);
+	const footage = GetFootage(I.fileBGM);
 
 	const countLoop = Math.ceil((D.full / footage.duration));
 

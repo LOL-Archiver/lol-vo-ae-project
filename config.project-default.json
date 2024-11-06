@@ -1,0 +1,10 @@
+{
+	"dirResources": "./resource",
+	"fileBGM": "./resource/public/Kai Engel - 09- Smoldering.mp3",
+	"fileWaterMark": "./resource/public/waterMark.png",
+	"fileLogo":"./resource/public/logo.png",
+	"fileLogoSide":"./resource/public/jugong480-500.mp4",
+	"textEnding": "解包/听写/整理/制作\n    by DanoR (Nuogz)\n\n如有错漏敬请留言\n\n所有素材来自测试服\n视频内容可能会随测试服多次更新",
+	"textEnding2": "解包/听写/整理/制作\n    by DanoR (Nuogz)\n\n如有错漏敬请留言",
+	"profileVideo": "landscape"
+}

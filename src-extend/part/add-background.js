@@ -1,10 +1,10 @@
 this.AddBackGround = () => {
 	const startBackgroundMiddle = 8;
-	const scaleBackground = I.video.landscape ? 158 : 268;
+	const scaleBackground = I.landscape ? 158 : 268;
 
 
 	/** @type {FootageItem} */
-	const footageBackground = GetFootage(EvalString(I.file.background), DirFootage);
+	const footageBackground = GetFootage(I.fileBackground, DirFootage);
 	const isVideoBackground = (footageBackground.file.name.match(/\.mp4$/) || []).length > 0;
 
 
@@ -38,8 +38,8 @@ this.AddBackGround = () => {
 	}
 
 
-	if(I.file.backgroundMain) {
-		const footageBackgroundMain = GetFootage(EvalString(I.file.backgroundMain), DirFootage);
+	if(I.fileBackgroundMain) {
+		const footageBackgroundMain = GetFootage(I.fileBackgroundMain, DirFootage);
 		const isVideoBackgroundMain = (footageBackgroundMain.file.name.match(/\.mp4$/) || []).length > 0;
 
 

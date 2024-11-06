@@ -1,4 +1,4 @@
-/// <reference path="bases.d.ts" />
+/// <reference path="../bases.d.ts" />
 
 
 
@@ -14,7 +14,7 @@ AddGlobal();
 
 AddBackGround();
 
-if(!I.video.simple) {
+if(!I.simple) {
 	AddTitle();
 }
 
@@ -32,7 +32,7 @@ let accumDuration = D.opener + D.title - 0.5;
 EnumLine(events, (line, lid, index) => {
 	const yCenter = 540;
 
-	let yLine = yCenter + (line.heightLive + I.video.size.gapLive);
+	let yLine = yCenter + (line.heightLive + I.gapLive);
 	let indexLine = index;
 
 	let durationLine = line.durationLine;
@@ -43,7 +43,7 @@ EnumLine(events, (line, lid, index) => {
 
 
 		const nextDuration = lineInfoExtra[0];
-		const nextBoxHeight = lineInfoExtra[1] + I.video.size.gapLive;
+		const nextBoxHeight = lineInfoExtra[1] + I.gapLive;
 
 		yLine -= nextBoxHeight;
 
@@ -56,11 +56,14 @@ EnumLine(events, (line, lid, index) => {
 
 	accumDuration += line.duration + D.interval;
 
-	$.writeln(`${index}: ${line.line}`);
+	$.writeln(`${index}: ${line.caption.replace(/\n/g, '，')}`);
 });
 
 
-if(!I.video.simple) {
+AddGlobalMark();
+$.writeln('Statge: AddGlobalMark');
+
+if(!I.simple) {
 	AddBGM();
 	$.writeln('Statge: AddBGM');
 	AddCounter();
