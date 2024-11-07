@@ -456,7 +456,7 @@ for(const line of linesFinal) {
 		if(nameFileMatch) { line.audio = resolvePath(dirVoiceLine, nameFileMatch); }
 	}
 
-	if(line.audio && (line.event == '选用' || line.event == '禁用' || line.event == '选用、禁用')) {
+	if(!line.audio && (line.event == '选用' || line.event == '禁用' || line.event == '选用、禁用')) {
 		line.audio = resolvePath(dirResourcesProject, `voice-${slotsEventTrans$event[line.event] ?? 'pick'}.wav`);
 	}
 
@@ -554,7 +554,7 @@ const infoProjectFinal = {
 	title2,
 	title2Suffix,
 	textEnding,
-	titleComp: `${runcom.slot} ${!isSkinMode ? '特别篇' : (idSkin > 0 ? '新皮肤' : '新英雄')} ${title1} ${title2}${title2Suffix || ''}${configVideo.widthVideo > configVideo.heightVideo ? '[横屏]' : '[竖屏]'}`,
+	titleComp: `${runcom.slot} ${!isSkinMode ? '特别篇' : (idSkin > 0 ? '新皮肤' : '新英雄')} ${title1} ${title2}${title2Suffix || ''}${configVideo.widthVideo > configVideo.heightVideo ? '' : ' 竖屏'}`,
 
 	colorsLine: [...colorsLine$color],
 
