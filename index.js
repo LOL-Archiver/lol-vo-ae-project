@@ -554,7 +554,7 @@ const infoProjectFinal = {
 	title2,
 	title2Suffix,
 	textEnding,
-	titleComp: `${configVideo.widthVideo > configVideo.heightVideo ? '[横屏] ' : '[竖屏] '}${runcom.slot} ${!isSkinMode ? '特别' : (idSkin > 0 ? '皮肤' : '英雄')} ${title1} ${title2}${title2Suffix || ''}`,
+	titleComp: `${runcom.slot} ${!isSkinMode ? '特别篇' : (idSkin > 0 ? '新皮肤' : '新英雄')} ${title1} ${title2}${title2Suffix || ''}${configVideo.widthVideo > configVideo.heightVideo ? '[横屏]' : '[竖屏]'}`,
 
 	colorsLine: [...colorsLine$color],
 

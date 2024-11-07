@@ -76,4 +76,6 @@ if(!I.simple) {
 CompMain.openInViewer();
 
 
-'success';
+$.writeln('-------date-------'.replace('date', new Date()));
+
+'成功';
