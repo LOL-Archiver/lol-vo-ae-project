@@ -1,5 +1,6 @@
 import { copyFileSync, existsSync, readdirSync, writeFileSync } from 'fs';
 import { resolve as resolvePath } from 'path';
+import { pathToFileURL } from 'url';
 
 import { readJSONSync } from 'fs-extra/esm';
 import { parseFile } from 'music-metadata';
@@ -10,8 +11,7 @@ import readDictationLines from './lib/read-raw-lines.js';
 import formatEvent from './lib/format-event.js';
 
 import { dirDistExtend, dirProject } from './lib/global.js';
-import { linesPublic$event } from './resource/conf/public.js';
-import { pathToFileURL } from 'url';
+import { linesPublic$event } from './lib/public.js';
 
 
 
@@ -393,7 +393,7 @@ for(const line of linesFinal) {
 	// 优先级1：公共事件匹配
 	for(const eventRaw of lineDictation.eventsRaw) {
 		const lineEventMatched = linesPublic$event[eventRaw];
-		if(lineEventMatched) { continue; }
+		if(!lineEventMatched) { continue; }
 
 		Object.assign(line, lineEventMatched);
 	};
