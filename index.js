@@ -74,6 +74,8 @@ const isSkinMode = runcom.mode == 'cs';
 const idChampion = isSkinMode ? Number(runcom.slotMain.slice(0, 3)) : null;
 /** 皮肤ID，仅皮肤模式 */
 const idSkin = isSkinMode ? Number(runcom.slotMain.slice(3, 6)) : null;
+/** 英雄ID填充 */
+const idChampionPad = isSkinMode ? String(idChampion).padStart(3, '0') : null;
 /** 皮肤ID填充 */
 const idSkinPad = isSkinMode ? String(idSkin).padStart(3, '0') : null;
 
@@ -90,23 +92,23 @@ let title2 = isSkinMode ? champion.name : null;
 
 
 /** 工程资源目录名 */
-const nameDirProject = isSkinMode ? `${champion.slot.toLowerCase()}${runcom.slotSub ? `.${runcom.slotSub}` : ''}` : runcom.slot;
+const nameDirProject = isSkinMode ? `${idChampionPad}-${champion.slot.toLowerCase()}${runcom.slotSub ? `.${runcom.slotSub}` : ''}` : `${runcom.slotSpecial}-${runcom.slot}`;
 /** 工程资源目录 */
 const dirResourcesProject = resolvePath(dirResources, 'project', nameDirProject);
 /** 工程配置 @type {ProjectConfig} */
-const configProject = (await import(pathToFileURL(resolvePath(dirResourcesProject, `config${isSkinMode ? `-${idSkinPad}` : ''}.js`)))).default;
+const configProject = (await import(pathToFileURL(resolvePath(dirResourcesProject, `${isSkinMode ? `${idSkinPad}-` : ''}config.js`)))).default;
 
 
 
 /** 默认头像文件 */
 const fileHead = configProject.fileHead ? resolvePath(configProject.fileHead)
-	: resolvePath(dirResourcesProject, `header${isSkinMode ? `-${idSkinPad}` : ''}.png`);
+	: resolvePath(dirResourcesProject, `${isSkinMode ? `${idSkinPad}-` : ''}-header.png`);
 /** 默认背景文件 */
 const fileBackground = configProject.fileBackground ? resolvePath(configProject.fileBackground)
-	: resolvePath(dirResourcesProject, `splash${isSkinMode ? `-${idSkinPad}` : ''}.jpg`);
+	: resolvePath(dirResourcesProject, `${isSkinMode ? `${idSkinPad}-` : ''}-splash.jpg`);
 /** 默认主背景文件 */
 const fileBackgroundMain = configProject.fileBackgroundMain ? resolvePath(configProject.fileBackgroundMain)
-	: resolvePath(dirResourcesProject, `splash-left${isSkinMode ? `-${idSkinPad}` : ''}.png`);
+	: resolvePath(dirResourcesProject, `${isSkinMode ? `${idSkinPad}-` : ''}splash-left.png`);
 
 /** 默认主Logo文件 */
 const fileLogo = configProject.fileLogo ? resolvePath(dirResourcesProject, configProject.fileLogo)
@@ -318,7 +320,7 @@ for(let indexDialog = 1; indexDialog <= configProject.dialogs?.length ?? 0; inde
 	// 台词顺序
 	const orderIDLine = rawRevs.split('>');
 	// 演员顺序
-	const orderWhoPlayer = (rawPlayers = rawPlayers||'A').split('').map(slot => whosDialogist$slot[slot] ?? slot);
+	const orderWhoPlayer = (rawPlayers = rawPlayers || 'A').split('').map(slot => whosDialogist$slot[slot] ?? slot);
 	// 目标顺序
 	const orderWhoTarget = (rawTargets || (rawPlayers == 'A' ? 'B' : '')).split('').map(slot => whosDialogist$slot[slot] ?? slot);
 
@@ -554,7 +556,7 @@ const infoProjectFinal = {
 	title2,
 	title2Suffix,
 	textEnding,
-	titleComp: `${runcom.slot} ${!isSkinMode ? '特别篇' : (idSkin > 0 ? '新皮肤' : '新英雄')} ${title1} ${title2}${title2Suffix || ''}${configVideo.widthVideo > configVideo.heightVideo ? '' : ' 竖屏'}`,
+	titleComp: `${runcom.slotSpecial ? `${runcom.slotSpecial}-` : ''}${runcom.slot} ${!isSkinMode ? '特别篇' : (idSkin > 0 ? '新皮肤' : '新英雄')}：${title1} ${title2}${title2Suffix || ''}${configVideo.widthVideo > configVideo.heightVideo ? '' : ' （竖屏）'}`,
 
 	colorsLine: [...colorsLine$color],
 
