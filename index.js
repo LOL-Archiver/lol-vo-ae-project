@@ -27,6 +27,8 @@ const parsePresetPath = (string, willResolvePath = true) => {
 	const result = string?.replace(/\$\{.+?\}/g, text => {
 		try {
 			// eslint-disable-next-line no-unused-vars
+			const VA = dirVoicesAll;
+			// eslint-disable-next-line no-unused-vars
 			const D = dirDictations;
 			// eslint-disable-next-line no-unused-vars
 			const R = resolvePath(dirResources, 'project');
@@ -54,7 +56,7 @@ const configUser = readJSONSync(resolvePath(dirProject, 'config.project-user.jso
 
 
 /** 语音总目录 */
-const dirVoices = resolvePath(dirProject, configUser.dirVoices || configDefault.dirVoices);
+const dirVoicesAll = resolvePath(dirProject, configUser.dirVoicesAll || configDefault.dirVoicesAll);
 /** 台词总目录 */
 const dirDictations = resolvePath(dirProject, configUser.dirDictations || configDefault.dirDictations);
 /** 资源总目录 */
@@ -102,10 +104,10 @@ const configProject = (await import(pathToFileURL(resolvePath(dirResourcesProjec
 
 /** 默认头像文件 */
 const fileHead = configProject.fileHead ? resolvePath(configProject.fileHead)
-	: resolvePath(dirResourcesProject, `${isSkinMode ? `${idSkinPad}-` : ''}-header.png`);
+	: resolvePath(dirResourcesProject, `${isSkinMode ? `${idSkinPad}-` : ''}header.png`);
 /** 默认背景文件 */
 const fileBackground = configProject.fileBackground ? resolvePath(configProject.fileBackground)
-	: resolvePath(dirResourcesProject, `${isSkinMode ? `${idSkinPad}-` : ''}-splash.jpg`);
+	: resolvePath(dirResourcesProject, `${isSkinMode ? `${idSkinPad}-` : ''}splash.jpg`);
 /** 默认主背景文件 */
 const fileBackgroundMain = configProject.fileBackgroundMain ? resolvePath(configProject.fileBackgroundMain)
 	: resolvePath(dirResourcesProject, `${isSkinMode ? `${idSkinPad}-` : ''}splash-left.png`);
@@ -141,8 +143,8 @@ const textEnding = configProject.textEnding || configUser.textEnding || configDe
 const fileDictation = parsePresetPath(configProject.fileDictation) || resolvePath(dirDictations,
 	readdirSync(dirDictations).find(file => file.includes(runcom.slot) && file.includes('@zh-cn') && !file.includes('.bak')));
 // 语音目录
-const dirVoice = configProject.dirVoice || resolvePath(dirVoices,
-	readdirSync(dirVoices).find(dir => dir.includes(runcom.slot) && dir.includes('@zh')));
+const dirVoices = configProject.dirVoices || resolvePath(dirVoicesAll,
+	readdirSync(dirVoicesAll).find(dir => dir.includes(runcom.slot) && dir.includes('@zh')));
 
 
 
@@ -195,7 +197,7 @@ const parseDictaionLineConfig = (lineDictation, from) => {
 	/** @type {LineConfig} */
 	const line = {
 		order: null,
-		orderRanged: null,
+		orderRanged: undefined,
 
 		ids: [lineDictation.idAudio, ...lineDictation.idsSound].join('|'),
 
@@ -209,11 +211,13 @@ const parseDictaionLineConfig = (lineDictation, from) => {
 		audio: null,
 
 		color: null,
+		colorTile: null,
 		head: null,
 		target: null,
 		skill: null,
 
 		side: extras.side?.[0] ?? 'right',
+		dialog: undefined,
 		from,
 
 		lineDictation,
@@ -253,7 +257,7 @@ if(runcom.slotsExtra?.length) {
 
 
 /** @type {LineConfig[]} */
-const linesFinal = [];
+let linesFinal = [];
 
 for(const lineDictation of linesDictation) {
 	const extras = lineDictation.extras;
@@ -348,6 +352,8 @@ for(let indexDialog = 1; indexDialog <= configProject.dialogs?.length ?? 0; inde
 		`\t台词: ${orderIDLine.map(order => order.padStart(alignOrder, ' ')).join(' => ')}\n`,
 		`\t角色: ${orderWhoPlayer.map(order => order.padStart(alignOrder, ' ')).join(' => ')}\n`,
 		`\t目标: ${orderWhoTarget.map(order => order.padStart(alignOrder, ' ')).join(' => ')}\n`,
+		`\t台词: ${orderWhoTarget.map(order => order.padStart(alignOrder, ' ')).join(' => ')}\n`,
+		`${orderIDLine.map((order, index) => `\t   ${index}: ${linesFinal.find(line => line.ids.includes(order))?.caption ?? '（空台词？）'}`).join('\n')}\n`,
 	);
 
 
@@ -373,7 +379,7 @@ for(let indexDialog = 1; indexDialog <= configProject.dialogs?.length ?? 0; inde
 		if(lineTarget) { lineDialog.target = lineTarget.head; }
 
 
-		linesDialog$id[idLine] = lineDialog;
+		linesDialog$id[idLine] = Object.assign(lineDialog, { dialog: `${textIndexDialog}-${indexRev}` });
 	}
 }
 
@@ -381,7 +387,7 @@ for(let indexDialog = 1; indexDialog <= configProject.dialogs?.length ?? 0; inde
 
 // 读取目录文件列表换成
 /** @type {Object<string,string[]>} */
-const filesAudio$dirVoice = {};
+const filesAudio$dirVoices = {};
 const slotsEventTrans$event = { '选用': 'pick', '禁用': 'ban' };
 
 const colorsLine$color = new Set();
@@ -403,7 +409,11 @@ for(const line of linesFinal) {
 
 
 	// 优先级2：工程公共资源
-	Object.assign(line, { color: configProject.color ?? null, head: fileHead ?? null });
+	Object.assign(line, {
+		color: configProject.color ?? null,
+		colorTile: configProject.colorTile ?? null,
+		head: fileHead ?? null,
+	});
 
 
 
@@ -449,13 +459,13 @@ for(const line of linesFinal) {
 
 
 	// 处理音频和读取时长
-	const dirVoiceLine = line.from && line.from != 'project' ? configProject.configsExtra[line.from]?.dirVoice : dirVoice;
+	const dirVoicesLine = parsePresetPath(line.dirVoices ?? (line.from && line.from != 'project' ? configProject.configsExtra[line.from]?.dirVoices : dirVoices));
 
-	if(!line.audio && dirVoiceLine) {
-		const nameFileMatch = (filesAudio$dirVoice[dirVoiceLine] || (filesAudio$dirVoice[dirVoiceLine] = readdirSync(dirVoiceLine)))
+	if(!line.audio && dirVoicesLine) {
+		const nameFileMatch = (filesAudio$dirVoices[dirVoicesLine] || (filesAudio$dirVoices[dirVoicesLine] = readdirSync(dirVoicesLine)))
 			.find(name => name.includes(line.nameAudio) || line.ids?.split('|').reduce((acc, id) => acc + name.includes(id), 0) > 0);
 
-		if(nameFileMatch) { line.audio = resolvePath(dirVoiceLine, nameFileMatch); }
+		if(nameFileMatch) { line.audio = resolvePath(dirVoicesLine, nameFileMatch); }
 	}
 
 	if(!line.audio && (line.event == '选用' || line.event == '禁用' || line.event == '选用、禁用')) {
@@ -469,6 +479,7 @@ for(const line of linesFinal) {
 
 
 	colorsLine$color.add(line.color);
+	colorsLine$color.add(line.colorTile);
 
 
 
@@ -476,6 +487,12 @@ for(const line of linesFinal) {
 	delete line.lineDictation;
 }
 
+
+const onlyMark = configProject.onlyMark || configUser.onlyMark || configDefault.onlyMark || false;
+if(onlyMark) { linesFinal = linesFinal.filter(line => line.mark); }
+
+const onlyDialog = configProject.onlyDialog || configUser.onlyDialog || configDefault.onlyDialog || false;
+if(onlyDialog) { linesFinal = linesFinal.filter(line => line.dialog); }
 
 
 // 片头背景预处理
@@ -490,11 +507,11 @@ for(const rawRuncom of runcom.runcoms) {
 	const idSkinOld = Number(runcomOld.slotMain.slice(3, 6));
 	const championOld = champions[idChampionOld];
 
-	const nameDirProjectOld = `${championOld.slot.toLowerCase()}${runcom.slotSub ? `.${runcom.slotSub}` : ''}`;
+	const nameDirProjectOld = `${String(idChampionOld).padStart(3, '0')}-${championOld.slot.toLowerCase()}${runcom.slotSub ? `.${runcom.slotSub}` : ''}`;
 
 
 	infosSplashOpener.push({
-		file: resolvePath(dirResources, 'project', nameDirProjectOld, `splash-${String(idSkinOld).padStart(3, '0')}.jpg`),
+		file: resolvePath(dirResources, 'project', nameDirProjectOld, `${String(idSkinOld).padStart(3, '0')}-splash.jpg`),
 		offset: offsetsSplashOpener$slot[runcomOld.slot] ?? 0,
 	});
 
@@ -558,7 +575,7 @@ const infoProjectFinal = {
 	textEnding,
 	titleComp: `${runcom.slotSpecial ? `${runcom.slotSpecial}-` : ''}${runcom.slot} ${!isSkinMode ? '特别篇' : (idSkin > 0 ? '新皮肤' : '新英雄')}：${title1} ${title2}${title2Suffix || ''}${configVideo.widthVideo > configVideo.heightVideo ? '' : ' （竖屏）'}`,
 
-	colorsLine: [...colorsLine$color],
+	colorsLine: [...colorsLine$color].filter(c => c),
 
 	lines: linesFinal,
 
@@ -570,10 +587,22 @@ const infoProjectFinal = {
 
 
 
+const stringInfoProjectFinal = JSON.stringify(infoProjectFinal, null, '\t');
+
+// 检查缺失文件
+const filesNeed = new Set(stringInfoProjectFinal.match(/(?<=(: |\t)")([A-Z]:(\\\\|\/).+?)(?=")/ig));
+const filesLack = [...filesNeed].filter(file => !existsSync(file)).sort();
+if(filesLack.length) {
+	globalThis.console.log(`以下工程所需文件不存在：\n${filesLack.map(file => `\t${file}`).join('\n')}`);
+
+	process.exit(1);
+}
+
+
 const fileInfo = resolvePath(dirResources, 'info', `${runcom.slot}.json`);
 const fileInfoDist = resolvePath(dirDistExtend, 'info.json');
 
-writeFileSync(fileInfo, JSON.stringify(infoProjectFinal, null, '\t'));
+writeFileSync(fileInfo, stringInfoProjectFinal);
 copyFileSync(fileInfo, fileInfoDist);
 writeFileSync(resolvePath(dirDistExtend, 'paths.js'), `this.PATH_INFO = '${fileInfoDist.replace(/\\/g, '\\\\')}';`);
 

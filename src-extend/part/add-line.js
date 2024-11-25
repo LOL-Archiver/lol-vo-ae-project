@@ -69,6 +69,7 @@ this.AddLine = (line, lid, dirLine, duration) => {
 	const layerMark = hasMark ? compLine.layers.addBoxText([1, 1], line.mark) : null;
 
 
+	const layerBoxLineTile = compLine.layers.addShape();
 	const layerBoxLine = compLine.layers.addShape();
 
 	// const layerShade = (I.fileShade) ? compLine.layers.add(GetFootage(I.fileShade, DirFootage)) : null;
@@ -96,6 +97,7 @@ this.AddLine = (line, lid, dirLine, duration) => {
 
 	layerLine.name = '台词';
 	layerBoxLine.name = '台词盒';
+	layerBoxLineTile.name = '台词盒-小片';
 
 	layerHeader.name = '头像';
 	layerBoxHeader.name = '头像盒';
@@ -180,6 +182,32 @@ this.AddLine = (line, lid, dirLine, duration) => {
 			xLine + widthTextLine / 2 - paddingLine,
 			yLine + heightTextLine / 2 - paddingLine - paddingTopExtra$event - leadingLine / 2,
 		],
+	});
+
+
+	// --------------台词盒小片--------------
+	const widthBoxLineTile = 140;
+	const heightBoxLineTile = 70;
+	const offsetBoxLineTile = 10;
+
+	/** @type {Group} */
+	const boxLineTile = AddProperty(layerBoxLineTile.content, 'ADBE Vector Group');
+
+	SetAttr(AddProperty(boxLineTile.content, 'ADBE Vector Shape - Rect'), {
+		size: [widthBoxLineTile, heightBoxLineTile],
+		roundness: 14,
+	});
+
+	const propFillBoxLineTile = AddProperty(boxLineTile.content, 'ADBE Vector Graphic - Fill');
+
+	propFillBoxLineTile.color.expression = `comp("00-全局变量").layer("${line.colorTile}").content("组 1").content("填充 1").color`;
+
+	SetAttr(layerBoxLineTile.transform, {
+		position: [
+			xLine + widthTextLine - paddingLine - (widthBoxLineTile / 2 - offsetBoxLineTile),
+			yLine + heightTextLine - paddingLine - paddingTopExtra$event - leadingLine / 2 - (heightBoxLineTile / 2 - offsetBoxLineTile),
+		],
+		opacity: 70,
 	});
 
 

@@ -4,7 +4,7 @@
 /** 基础路径配置 */
 type BasePathConfig = {
 	/** 语音总目录（用于在皮肤模式下，匹配对应的语音目录和台词文件） */
-	readonly dirVoices: string;
+	readonly dirVoicesAll: string;
 	/** 台词总目录（用于在皮肤模式下，匹配对应的语音目录和台词文件） */
 	readonly dirDictations: string;
 	/** 资源总目录（用于根据runcom匹配对应的资源目录） */
@@ -96,8 +96,10 @@ type VideoDebugConfig = {
 	readonly simple: boolean;
 	/** 不添加音频文件（用于快速生成工程） */
 	readonly mute: boolean;
-	/** 只添加含有备注的台词（用于快速预览含有备注的台词） */
+	/** 只包括含有备注的台词（用于快速预览） */
 	readonly onlyMark: boolean;
+	/** 只包括是对话的台词（用于快速预览） */
+	readonly onlyDialog: boolean;
 
 	/**
 	 * 台词范围
@@ -132,11 +134,13 @@ type ProjectConfig = BasePathConfig & ResourcePathConfig & VideoConfig & VideoDe
 	/** 台词文件 */
 	readonly fileDictation: string;
 	/** 语音目录 */
-	readonly dirVoice: string;
+	readonly dirVoices: string;
 
 
 	/** 颜色 */
 	readonly color: string;
+	/** 小片颜色 */
+	readonly colorTile: string;
 	/** 主标题 */
 	readonly title1: string;
 	/** 副标题 */
@@ -159,7 +163,7 @@ type ProjectConfig = BasePathConfig & ResourcePathConfig & VideoConfig & VideoDe
 			/** 台词文件 */
 			readonly fileDictation: string;
 			/** 语音目录 */
-			readonly dirVoice: string;
+			readonly dirVoices: string;
 		};
 	};
 	/** 手动追加的台词 */
@@ -309,6 +313,8 @@ type LineConfig = {
 
 	/** 颜色 */
 	readonly color: string;
+	/** 小片颜色 */
+	readonly colorTile: string;
 	/** 头像文件 */
 	readonly head: string;
 	/** 目标文件 */
@@ -319,8 +325,14 @@ type LineConfig = {
 	/** 台词位置 */
 	readonly side: 'right' | 'left';
 
-	/** 台词来源，如果为空则表明来自主台词文件 */
+	/** 台词来源，如果为空则表示来自主台词文件 */
 	readonly from?: string;
+	/** 对话索引来源 */
+	readonly dialog?: string;
+
+
+	/** 语音目录 */
+	readonly dirVoices?: string;
 }
 
 
