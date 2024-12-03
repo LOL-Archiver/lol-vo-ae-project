@@ -103,13 +103,13 @@ const configProject = (await import(pathToFileURL(resolvePath(dirResourcesProjec
 
 
 /** 默认头像文件 */
-const fileHead = configProject.fileHead ? resolvePath(configProject.fileHead)
+const fileHead = configProject.fileHead ? parsePresetPath(configProject.fileHead)
 	: resolvePath(dirResourcesProject, `${isSkinMode ? `${idSkinPad}-` : ''}header.png`);
 /** 默认背景文件 */
-const fileBackground = configProject.fileBackground ? resolvePath(configProject.fileBackground)
+const fileBackground = configProject.fileBackground ? parsePresetPath(configProject.fileBackground)
 	: resolvePath(dirResourcesProject, `${isSkinMode ? `${idSkinPad}-` : ''}splash.jpg`);
 /** 默认主背景文件 */
-const fileBackgroundMain = configProject.fileBackgroundMain ? resolvePath(configProject.fileBackgroundMain)
+const fileBackgroundMain = configProject.fileBackgroundMain ? parsePresetPath(configProject.fileBackgroundMain)
 	: resolvePath(dirResourcesProject, `${isSkinMode ? `${idSkinPad}-` : ''}splash-left.png`);
 
 /** 默认主Logo文件 */
@@ -199,7 +199,7 @@ const parseDictaionLineConfig = (lineDictation, from) => {
 		order: null,
 		orderRanged: undefined,
 
-		ids: [lineDictation.idAudio, ...lineDictation.idsSound].join('|'),
+		ids: [lineDictation.idAudio, ...lineDictation.idsSound].filter(id => id).join('|'),
 
 		event: lineDictation.eventsRaw.map(eventRaw => formatEvent(eventRaw)).join('、'),
 		caption: lineDictation.caption,
@@ -597,6 +597,16 @@ if(filesLack.length) {
 
 	process.exit(1);
 }
+
+
+// 计算时长
+let durationAll = 0;
+for(const line of infoProjectFinal.lines) {
+	durationAll += (line.duration ?? 0) + infoProjectFinal.durationInterval;
+}
+durationAll += (infoProjectFinal.durationOpener) + (infoProjectFinal.durationEnding + 4.5);
+globalThis.console.log(`总台词：${infoProjectFinal.lines.length}个`);
+globalThis.console.log(`总时长：${durationAll.toFixed(1)}秒 (${~~(durationAll / 60)}分${~~(durationAll - ~~(durationAll / 60) * 60)}秒)`);
 
 
 const fileInfo = resolvePath(dirResources, 'info', `${runcom.slot}.json`);
